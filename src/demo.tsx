@@ -16,7 +16,7 @@ function Demo() {
           onClose={() => setIsOpen(false)}
           duration={250}
           hideScrollbars={true}
-          className="drawer"
+          height={400}
         >
           <h1> React Bottom Drawers! </h1>
           <p>

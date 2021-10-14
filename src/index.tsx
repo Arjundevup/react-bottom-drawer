@@ -38,6 +38,7 @@ const SlideUpTransition = ({
 }: IProps) => {
   const classNames = useGlobalStyles(duration, hideScrollbars);
   const nodeRef = React.useRef(null);
+  const containerRef = React.useRef(null);
 
   // Actions to close
   useEscButton(onClose, isVisible);
@@ -50,7 +51,6 @@ const SlideUpTransition = ({
   const swipeHandlers = useSwipeable({
     onSwipedDown: debounce(
       ({ velocity }) => {
-        // setDeltaY(0);
         defaultHeight = height;
         if (velocity > 0.5) {
           onClose();
@@ -66,10 +66,6 @@ const SlideUpTransition = ({
     ),
     onSwipedUp: debounce(
       ({ velocity }) => {
-        // setDeltaY(0);
-        // if (velocity > 0.5) {
-        //   onClose();
-        // }
         defaultHeight = height;
         console.log('DH:', defaultHeight)
       },
@@ -82,17 +78,6 @@ const SlideUpTransition = ({
       console.log('H:', height)
     },
   });
-
-  const getTransforms = (): React.CSSProperties | undefined => {
-    if (currentDeltaY >= 0) {
-      return undefined;
-    }
-
-    return {
-      // transform: `translate3d(0, ${currentDeltaY * -1}px, 0)`,
-      // transition: "none",
-    };
-  };
 
   // Layout
   return (
@@ -111,11 +96,10 @@ const SlideUpTransition = ({
             <div
               className={clsx(className, classNames.drawer)}
               style={{
-                ...TransitionStyles[state],
-                ...getTransforms(),
+                ...TransitionStyles[state]
               }}
             >
-              <div style={{ height: height }}>
+              <div style={{ height: height }} ref={containerRef}>
                 <div {...swipeHandlers} className={clsx(className && `${className}__handle-wrapper`, classNames.handleWrapper)}>
                   <div className={clsx(className && `${className}__handle`, classNames.handle)} />
                 </div>
