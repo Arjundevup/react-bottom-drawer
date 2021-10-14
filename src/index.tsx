@@ -13,6 +13,7 @@ import clsx from "clsx";
 
 interface IProps {
   isVisible: boolean;
+  drawerHeight: number;
   onClose: () => void;
   duration?: number;
   hideScrollbars?: boolean;
@@ -23,11 +24,9 @@ interface IProps {
   children: React.ReactNode;
 }
 
-
-let defaultHeight = 400;
-
 const SlideUpTransition = ({
   isVisible,
+  drawerHeight,
   children,
   onClose,
   unmountOnExit = true,
@@ -40,42 +39,38 @@ const SlideUpTransition = ({
   const nodeRef = React.useRef(null);
   const containerRef = React.useRef(null);
 
+  const [defaultHeight, setDefaultHeight] = React.useState(drawerHeight);
   // Actions to close
   useEscButton(onClose, isVisible);
   usePreventScroll(isVisible, classNames.contentWrapper);
 
   // Swiping down interaction
-  const [currentDeltaY, setDeltaY] = React.useState(0);
   const [height, setHeight] = React.useState(defaultHeight);
 
   const swipeHandlers = useSwipeable({
     onSwipedDown: debounce(
       ({ velocity }) => {
-        defaultHeight = height;
+        setDefaultHeight(height);
         if (velocity > 0.5) {
           onClose();
           setTimeout(() => {
-            defaultHeight = 400;
-            setHeight(defaultHeight)
+            setDefaultHeight(drawerHeight);
+            setHeight(drawerHeight);
           }, 500)
         }
-        console.log('DH:', defaultHeight)
       },
       500,
       { leading: true }
     ),
     onSwipedUp: debounce(
       ({ velocity }) => {
-        defaultHeight = height;
-        console.log('DH:', defaultHeight)
+        setDefaultHeight(height);
       },
       500,
       { leading: true }
     ),
     onSwiping: ({ deltaY }) => {
-      setDeltaY(deltaY);
       setHeight(defaultHeight + Number(deltaY));
-      console.log('H:', height)
     },
   });
 
@@ -92,7 +87,13 @@ const SlideUpTransition = ({
       >
         {(state) => (
           <div ref={nodeRef}>
-            <div onClick={onClose} className={clsx(className && `${className}__backdrop`, classNames.backdrop)} style={BackdropStyles[state]} />
+            <div onClick={() => {
+              onClose();
+              setTimeout(() => {
+                setDefaultHeight(drawerHeight);
+                setHeight(drawerHeight);
+              }, 500)
+            }} className={clsx(className && `${className}__backdrop`, classNames.backdrop)} style={BackdropStyles[state]} />
             <div
               className={clsx(className, classNames.drawer)}
               style={{
