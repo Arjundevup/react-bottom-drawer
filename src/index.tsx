@@ -23,6 +23,9 @@ interface IProps {
   children: React.ReactNode;
 }
 
+
+let defaultHeight = 400;
+
 const SlideUpTransition = ({
   isVisible,
   children,
@@ -35,26 +38,48 @@ const SlideUpTransition = ({
 }: IProps) => {
   const classNames = useGlobalStyles(duration, hideScrollbars);
   const nodeRef = React.useRef(null);
-  
+
   // Actions to close
   useEscButton(onClose, isVisible);
   usePreventScroll(isVisible, classNames.contentWrapper);
 
   // Swiping down interaction
   const [currentDeltaY, setDeltaY] = React.useState(0);
+  const [height, setHeight] = React.useState(defaultHeight);
+
   const swipeHandlers = useSwipeable({
     onSwipedDown: debounce(
       ({ velocity }) => {
-        setDeltaY(0);
+        // setDeltaY(0);
+        defaultHeight = height;
         if (velocity > 0.5) {
           onClose();
+          setTimeout(() => {
+            defaultHeight = 400;
+            setHeight(defaultHeight)
+          }, 500)
         }
+        console.log('DH:', defaultHeight)
+      },
+      500,
+      { leading: true }
+    ),
+    onSwipedUp: debounce(
+      ({ velocity }) => {
+        // setDeltaY(0);
+        // if (velocity > 0.5) {
+        //   onClose();
+        // }
+        defaultHeight = height;
+        console.log('DH:', defaultHeight)
       },
       500,
       { leading: true }
     ),
     onSwiping: ({ deltaY }) => {
       setDeltaY(deltaY);
+      setHeight(defaultHeight + Number(deltaY));
+      console.log('H:', height)
     },
   });
 
@@ -64,8 +89,8 @@ const SlideUpTransition = ({
     }
 
     return {
-      transform: `translate3d(0, ${currentDeltaY * -1}px, 0)`,
-      transition: "none",
+      // transform: `translate3d(0, ${currentDeltaY * -1}px, 0)`,
+      // transition: "none",
     };
   };
 
@@ -90,10 +115,13 @@ const SlideUpTransition = ({
                 ...getTransforms(),
               }}
             >
-              <div {...swipeHandlers} className={clsx(className && `${className}__handle-wrapper`, classNames.handleWrapper)}>
-                <div className={clsx(className && `${className}__handle`, classNames.handle)} />
+              <div style={{ height: height }}>
+                <div {...swipeHandlers} className={clsx(className && `${className}__handle-wrapper`, classNames.handleWrapper)}>
+                  <div className={clsx(className && `${className}__handle`, classNames.handle)} />
+                </div>
+                <div className={clsx(className && `${className}__content`, classNames.contentWrapper)}>{children}</div>
               </div>
-              <div className={clsx(className && `${className}__content`, classNames.contentWrapper)}>{children}</div>
+
             </div>
           </div>
         )}
