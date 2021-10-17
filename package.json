@@ -5,7 +5,7 @@
   "main": "dist",
   "scripts": {
     "start": "parcel index.html",
-    "test": "test",
+    "test": "echo \"No test specified\"",
     "prebuild": "rimraf dist",
     "build": "npm i && tsc",
     "prepublishOnly": "yarn build"
@@ -20,7 +20,7 @@
     "modal",
     "dialog"
   ],
-  "author": "",
+  "author": "Arjun",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/arjundevup/react-bottom-drawer/issues"
