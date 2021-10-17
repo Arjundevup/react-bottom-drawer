@@ -7,7 +7,7 @@
     "start": "parcel index.html",
     "test": "echo \"No test specified\"",
     "prebuild": "rimraf dist",
-    "build": "npm i && tsc",
+    "build": "tsc",
     "prepublishOnly": "yarn build"
   },
   "repository": {
