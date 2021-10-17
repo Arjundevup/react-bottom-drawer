@@ -1,6 +1,6 @@
 {
-  "name": "react-bottom-drawer",
-  "version": "0.1.1",
+  "name": "react-bottom-drawer-custom",
+  "version": "0.0.1",
   "description": "A React Component to build friendly dialogs that slide from the bottom",
   "main": "dist",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/fpellicero/react-bottom-drawer.git"
+    "url": "git+ssh://git@github.com/arjundevup/react-bottom-drawer.git"
   },
   "keywords": [
     "react",
@@ -20,12 +20,12 @@
     "modal",
     "dialog"
   ],
-  "author": "Francesc Pellicero <fpellicero@gmail.com> (https://fpellicero.github.io)",
+  "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/fpellicero/react-bottom-drawer/issues"
+    "url": "https://github.com/arjundevup/react-bottom-drawer/issues"
   },
-  "homepage": "https://github.com/fpellicero/react-bottom-drawer#readme",
+  "homepage": "https://github.com/arjundevup/react-bottom-drawer#readme",
   "peerDependencies": {
     "react": "^16.8.0",
     "react-dom": "^16.8.0"
