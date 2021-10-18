@@ -100,7 +100,7 @@ const SlideUpTransition = ({
                 ...TransitionStyles[state]
               }}
             >
-              <div style={{ height: height }} ref={containerRef}>
+              <div style={{ height: height ? height : defaultHeight }} className={clsx(className, classNames.container)} ref={containerRef}>
                 <div {...swipeHandlers} className={clsx(className && `${className}__handle-wrapper`, classNames.handleWrapper)}>
                   <div className={clsx(className && `${className}__handle`, classNames.handle)} />
                 </div>

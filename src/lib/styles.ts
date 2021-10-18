@@ -21,6 +21,7 @@ export const getClassNames = (identifier: string) => ({
   backdrop: `rbd-${identifier}-db`,
   drawer: `rbd-${identifier}-dr`,
   handleWrapper: `rbd-${identifier}-hw`,
+  container: `rbd-${identifier}-ct`,
   handle: `rbd-${identifier}-h`,
   contentWrapper: `rbd-${identifier}-cw`,
 });
@@ -57,6 +58,10 @@ const globalStylesheet = (
     justify-content: center;
     padding: 10px 0;
   }
+  .${classNames.container} {
+    display: flex;
+    flex-direction: column;
+  }
   .${classNames.handle} {
     background: #e3e3e3;
     height: 5px;
@@ -65,20 +70,18 @@ const globalStylesheet = (
   }
   .${classNames.contentWrapper} {
     padding: 0 10px;
-    max-height: calc(70vh - 25px);
+    // max-height: calc(70vh - 25px);
     overflow-x: hidden;
     overflow-y: auto;
-    ${
-      hideScrollbars
-        ? `
+    ${hideScrollbars
+      ? `
       scrollbar-width: none;
       -ms-overflow-style: none;
     `
-        : ""
+      : ""
     }
   }
-  ${
-    hideScrollbars
+  ${hideScrollbars
       ? `
   .${classNames.contentWrapper}::-webkit-scrollbar {
     width: 0px;
@@ -86,7 +89,7 @@ const globalStylesheet = (
   }
   `
       : ""
-  }
+    }
     
 `
     .split("\n")
