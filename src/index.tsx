@@ -13,7 +13,10 @@ import clsx from "clsx";
 
 interface IProps {
   isVisible: boolean;
-  drawerHeight: number;
+  drawerHeight?: number;
+  drawerMinHeight?: number;
+  drawerMaxHeight?: number;
+  handle?: JSX.Element;
   onClose: () => void;
   duration?: number;
   hideScrollbars?: boolean;
@@ -26,7 +29,10 @@ interface IProps {
 
 const SlideUpTransition = ({
   isVisible,
-  drawerHeight,
+  drawerHeight = 250,
+  drawerMinHeight,
+  drawerMaxHeight,
+  handle,
   children,
   onClose,
   unmountOnExit = true,
@@ -70,8 +76,19 @@ const SlideUpTransition = ({
       { leading: true }
     ),
     onSwiping: ({ deltaY }) => {
-      setHeight(defaultHeight + Number(deltaY));
+      if (drawerMinHeight || drawerMaxHeight) {
+        if (drawerMinHeight && (defaultHeight + Number(deltaY) > drawerMinHeight)) {
+          setHeight(defaultHeight + Number(deltaY));
+        }
+        if (drawerMaxHeight && (defaultHeight + Number(deltaY) < drawerMaxHeight)) {
+          setHeight(defaultHeight + Number(deltaY));
+        }
+      } else {
+        setHeight(defaultHeight + Number(deltaY));
+      }
     },
+    trackMouse: true,
+    trackTouch: true
   });
 
   // Layout
@@ -102,7 +119,7 @@ const SlideUpTransition = ({
             >
               <div style={{ height: height ? height : defaultHeight }} className={clsx(className, classNames.container)} ref={containerRef}>
                 <div {...swipeHandlers} className={clsx(className && `${className}__handle-wrapper`, classNames.handleWrapper)}>
-                  <div className={clsx(className && `${className}__handle`, classNames.handle)} />
+                  {handle ? handle : <div className={clsx(className && `${className}__handle`, classNames.handle)} />}
                 </div>
                 <div className={clsx(className && `${className}__content`, classNames.contentWrapper)}>{children}</div>
               </div>
