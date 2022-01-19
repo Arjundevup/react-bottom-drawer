@@ -76,14 +76,12 @@ const SlideUpTransition = ({
       { leading: true }
     ),
     onSwiping: ({ deltaY }) => {
-      if (drawerMinHeight || drawerMaxHeight) {
-        if (drawerMinHeight && (defaultHeight + Number(deltaY) > drawerMinHeight)) {
+      if (drawerMinHeight && drawerMaxHeight) {
+        if ((defaultHeight + Number(deltaY) < drawerMaxHeight) && (defaultHeight + Number(deltaY) > drawerMinHeight)) {
           setHeight(defaultHeight + Number(deltaY));
         }
-        if (drawerMaxHeight && (defaultHeight + Number(deltaY) < drawerMaxHeight)) {
-          setHeight(defaultHeight + Number(deltaY));
-        }
-      } else {
+      }
+      else {
         setHeight(defaultHeight + Number(deltaY));
       }
     },
@@ -103,7 +101,7 @@ const SlideUpTransition = ({
         nodeRef={nodeRef}
       >
         {(state) => (
-          <div ref={nodeRef}>
+          <div ref={nodeRef} style={{ height: height ? height : defaultHeight }}>
             <div onClick={() => {
               onClose();
               setTimeout(() => {
