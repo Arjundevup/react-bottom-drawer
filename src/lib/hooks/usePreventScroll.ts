@@ -9,7 +9,16 @@ function usePreventScroll(enabled: boolean, contentWrapperClass: string) {
     
     const scrollableElement = document.querySelector(`.${contentWrapperClass}`);
 
-    disableBodyScroll(scrollableElement);
+    disableBodyScroll(scrollableElement, {
+      allowTouchMove: el => {
+        while (el && el !== document.body) {
+          if (el.getAttribute('bodyscrolllockignore') !== null) {
+            return true;
+          }
+    
+          el = el.parentElement;
+        }
+      }});
     console.log("Disable body scrol");
 
     return () => {
